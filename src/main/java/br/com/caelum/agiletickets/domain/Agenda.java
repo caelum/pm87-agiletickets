@@ -16,5 +16,7 @@ public interface Agenda {
 	void agende(List<Sessao> sessoes);
 	
 	List<Sessao> proximasSessoes(int maximo);
+	
+	Sessao sessao(Long sessaoId);
 
 }

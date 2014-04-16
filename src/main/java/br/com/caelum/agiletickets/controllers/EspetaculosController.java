@@ -82,6 +82,16 @@ public class EspetaculosController {
 		result.include("message", sessoes.size() + " sessões criadas com sucesso");
 		result.redirectTo(this).lista();
 	}
+	
+	@Get("/sessao/{id}")
+	public void sessao(Long id) {
+		Sessao sessao = agenda.sessao(id);
+		if (sessao == null) {
+			result.notFound();
+		}
+
+		result.include("sessao", sessao);
+	}
 
 	private Espetaculo carregaEspetaculo(Long espetaculoId) {
 		Espetaculo espetaculo = agenda.espetaculo(espetaculoId);
