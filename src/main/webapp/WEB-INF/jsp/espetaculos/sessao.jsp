@@ -40,5 +40,15 @@
 			<span class="label">Ingressos disponíveis:</span>
 			${sessao.ingressosDisponiveis}
 		</p>
+		
+		<c:if test="${sessao.ingressosDisponiveis gt 0}">
+			<form action="<c:url value="/sessao/${sessao.id}/reserva"/>" method="post">
+				<h3>Reservar ingresso</h3>
+				<label for="qtde">Quantidade</label>
+				<input id="qtde" name="quantidade"/>
+				
+				<input type="submit" value="Reservar"/>
+			</form>
+		</c:if>
 	</body>
 </html>

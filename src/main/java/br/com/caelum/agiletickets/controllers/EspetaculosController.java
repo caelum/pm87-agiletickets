@@ -2,18 +2,23 @@ package br.com.caelum.agiletickets.controllers;
 
 import static br.com.caelum.vraptor.view.Results.status;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import br.com.caelum.agiletickets.domain.Agenda;
 import br.com.caelum.agiletickets.domain.DiretorioDeEstabelecimentos;
+import br.com.caelum.agiletickets.domain.precos.CalculadoraDePrecos;
 import br.com.caelum.agiletickets.models.Espetaculo;
 import br.com.caelum.agiletickets.models.Estabelecimento;
 import br.com.caelum.agiletickets.models.Periodicidade;
 import br.com.caelum.agiletickets.models.Sessao;
 import br.com.caelum.vraptor.Get;
+import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
@@ -24,6 +29,8 @@ import com.google.common.base.Strings;
 
 @Resource
 public class EspetaculosController {
+	
+	private NumberFormat CURRENCY = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 	
 	private final Result result;
 	private final Validator validator;
@@ -91,6 +98,34 @@ public class EspetaculosController {
 		}
 
 		result.include("sessao", sessao);
+	}
+	
+	@Post @Path("/sessao/{sessaoId}/reserva")
+	public void reserva(Long sessaoId, final Integer quantidade) {
+		Sessao sessao = agenda.sessao(sessaoId);
+		if (sessao == null) {
+			result.notFound();
+			return;
+		}
+
+		if (quantidade < 1) {
+			validator.add(new ValidationMessage("Você deve escolher um lugar ou mais", ""));
+		}
+
+		if (!sessao.podeReservar(quantidade)) {
+			validator.add(new ValidationMessage("Não existem ingressos disponíveis", ""));
+		}
+
+		// em caso de erro, redireciona para a lista de sessao
+		validator.onErrorRedirectTo(this).sessao(sessao.getId());
+
+		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, quantidade);
+
+		sessao.reserva(quantidade);
+
+		result.include("message", "Sessão reservada com sucesso por " + CURRENCY.format(precoTotal));
+
+		result.redirectTo(IndexController.class).index();
 	}
 
 	private Espetaculo carregaEspetaculo(Long espetaculoId) {
