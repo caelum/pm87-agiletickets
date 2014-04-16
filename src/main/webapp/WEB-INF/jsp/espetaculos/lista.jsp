@@ -50,16 +50,20 @@
 					<th>Nome</th>
 					<th>Descrição</th>
 					<th>Tipo</th>
+					<th></th>
 				</tr>
 			</thead>
 		
 			<tbody>
 				<c:forEach items="${espetaculoList}" var="espetaculo">
 					<tr>
-						<td>${espetaculo.id }</td>
-						<td>${espetaculo.nome }</td>
-						<td>${espetaculo.descricao }</td>
-						<td>${espetaculo.tipo }</td>
+						<td>${espetaculo.id}</td>
+						<td>${espetaculo.nome}</td>
+						<td>${espetaculo.descricao}</td>
+						<td>${espetaculo.tipo}</td>
+						<td>
+							<a href="<c:url value="/espetaculo/${espetaculo.id}/sessoes"/>">Criar sessões</a>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
