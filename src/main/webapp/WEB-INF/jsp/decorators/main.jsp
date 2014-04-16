@@ -26,7 +26,7 @@
 		<c:if test="${not empty errors}">
 			<ul id="errors">
 				<c:forEach items="${errors}" var="error">
-					<li>${error.category} - ${error.message}</li>
+					<li>${error.message}</li>
 				</c:forEach>
 			</ul>
 		</c:if>
