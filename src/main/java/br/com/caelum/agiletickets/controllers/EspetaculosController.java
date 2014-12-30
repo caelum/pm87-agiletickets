@@ -1,11 +1,11 @@
 package br.com.caelum.agiletickets.controllers;
 
-import static br.com.caelum.vraptor.view.Results.status;
-
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -17,27 +17,34 @@ import br.com.caelum.agiletickets.models.Espetaculo;
 import br.com.caelum.agiletickets.models.Estabelecimento;
 import br.com.caelum.agiletickets.models.Periodicidade;
 import br.com.caelum.agiletickets.models.Sessao;
+import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
-import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.Validator;
-import br.com.caelum.vraptor.validator.ValidationMessage;
+import br.com.caelum.vraptor.validator.SimpleMessage;
+import br.com.caelum.vraptor.validator.Validator;
 
 import com.google.common.base.Strings;
 
-@Resource
+import static br.com.caelum.vraptor.view.Results.status;
+
+@Controller
 public class EspetaculosController {
 	
 	private NumberFormat CURRENCY = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 	
-	private final Result result;
-	private final Validator validator;
-	private final Agenda agenda;
-	private final DiretorioDeEstabelecimentos estabelecimentos;
+	private Result result;
+	private Validator validator;
+	private Agenda agenda;
+	private DiretorioDeEstabelecimentos estabelecimentos;
 	private Estabelecimento estabelecimento;
+	
+	/** @deprecated CDI eyes only*/
+	protected EspetaculosController() {
+	}
 
+	@Inject
 	public EspetaculosController(Result result, Validator validator, Agenda agenda, DiretorioDeEstabelecimentos estabelecimentos) {
 		this.result = result;
 		this.validator = validator;
@@ -58,10 +65,10 @@ public class EspetaculosController {
 		// se nao tiver nome, avisa o usuario
 		// se nao tiver descricao, avisa o usuario
 		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
-			validator.add(new ValidationMessage("Nome do espetáculo não pode estar em branco", ""));
+			validator.add(new SimpleMessage("Nome do espetáculo não pode estar em branco", ""));
 		}
 		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
-			validator.add(new ValidationMessage("Descrição do espetáculo não pode estar em branco", ""));
+			validator.add(new SimpleMessage("Descrição do espetáculo não pode estar em branco", ""));
 		}
 		validator.onErrorRedirectTo(this).lista();
 
@@ -109,11 +116,11 @@ public class EspetaculosController {
 		}
 
 		if (quantidade < 1) {
-			validator.add(new ValidationMessage("Você deve escolher um lugar ou mais", ""));
+			validator.add(new SimpleMessage("Você deve escolher um lugar ou mais", ""));
 		}
 
 		if (!sessao.podeReservar(quantidade)) {
-			validator.add(new ValidationMessage("Não existem ingressos disponíveis", ""));
+			validator.add(new SimpleMessage("Não existem ingressos disponíveis", ""));
 		}
 
 		// em caso de erro, redireciona para a lista de sessao
@@ -131,7 +138,7 @@ public class EspetaculosController {
 	private Espetaculo carregaEspetaculo(Long espetaculoId) {
 		Espetaculo espetaculo = agenda.espetaculo(espetaculoId);
 		if (espetaculo == null) {
-			validator.add(new ValidationMessage("", ""));
+			validator.add(new SimpleMessage("", ""));
 		}
 		validator.onErrorUse(status()).notFound();
 		return espetaculo;

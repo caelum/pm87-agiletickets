@@ -3,6 +3,8 @@ package br.com.caelum.agiletickets;
 import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import org.joda.time.DateTime;
 
@@ -10,18 +12,15 @@ import br.com.caelum.agiletickets.models.Espetaculo;
 import br.com.caelum.agiletickets.models.Estabelecimento;
 import br.com.caelum.agiletickets.models.Sessao;
 import br.com.caelum.agiletickets.models.TipoDeEspetaculo;
-import br.com.caelum.vraptor.util.jpa.EntityManagerCreator;
-import br.com.caelum.vraptor.util.jpa.EntityManagerFactoryCreator;
 
 public class PreencheBanco {
 
 	// ALUNO: Não apague essa classe
 	public static void main(String[] args) {
-		EntityManagerFactoryCreator creator = new EntityManagerFactoryCreator();
-		creator.create();
-		EntityManagerCreator managerCreator = new EntityManagerCreator(creator.getInstance());
-		managerCreator.create();
-		EntityManager manager = managerCreator.getInstance();
+		
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("default");
+		
+		EntityManager manager = factory.createEntityManager();
 
 		manager.getTransaction().begin();
 		manager.createQuery("delete from Sessao").executeUpdate();
@@ -52,6 +51,7 @@ public class PreencheBanco {
 
 		manager.getTransaction().commit();
 		manager.close();
+		factory.close();
 	}
 	
 }

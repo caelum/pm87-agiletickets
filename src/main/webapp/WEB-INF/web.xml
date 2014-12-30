@@ -19,6 +19,10 @@
 		<param-name>br.com.caelum.vraptor.encoding</param-name>
 		<param-value>UTF-8</param-value>
 	</context-param>
+	
+	<listener>
+	    <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+	</listener>
 
 	<filter>
 		<filter-name>sitemesh</filter-name>
