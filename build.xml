@@ -88,23 +88,6 @@
 	</target>
 
 	<!-- ================================= 
-          target: jetty.run              
-         ================================= -->
-	<target name="jetty.run" description="--> run jetty server" depends="compile">
-		<path id="jetty.path.id">
-		    <fileset dir="lib/jetty" />
-		</path>
-		<taskdef classpathref="jetty.path.id" resource="tasks.properties" loaderref="jetty.loader" />
-		<jetty tempDirectory="${output.dir}/jetty-temp">
-            <webApp name="${project.name}" warfile="${webapp.dir}" contextpath="/" scanIntervalSeconds="3">
-                <scanTargets dir="${build.dir}">
-                    <include name="**/*"/>
-                </scanTargets>
-            </webApp>
-		</jetty>
-	</target>
-
-	<!-- ================================= 
           target: minify              
          ================================= -->
 	<target name="minify" depends="resolve" description="minify js and css">
