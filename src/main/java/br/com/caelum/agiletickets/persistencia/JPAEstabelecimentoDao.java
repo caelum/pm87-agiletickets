@@ -2,17 +2,21 @@ package br.com.caelum.agiletickets.persistencia;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.caelum.agiletickets.domain.DiretorioDeEstabelecimentos;
 import br.com.caelum.agiletickets.models.Estabelecimento;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class JPAEstabelecimentoDao implements DiretorioDeEstabelecimentos {
 
-	private final EntityManager manager;
+	private EntityManager manager;
 	
+	/** @deprecated CDI eyes only*/
+	protected JPAEstabelecimentoDao() {
+	}
+	
+	@Inject
 	public JPAEstabelecimentoDao(EntityManager manager) {
 		this.manager = manager;
 	}

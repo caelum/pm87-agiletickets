@@ -2,24 +2,31 @@ package br.com.caelum.agiletickets.controllers;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.com.caelum.agiletickets.domain.DiretorioDeEstabelecimentos;
 import br.com.caelum.agiletickets.models.Estabelecimento;
+import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
-import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.Validator;
-import br.com.caelum.vraptor.validator.Validations;
+import br.com.caelum.vraptor.validator.I18nMessage;
+import br.com.caelum.vraptor.validator.Validator;
 
 import com.google.common.base.Strings;
 
-@Resource
+@Controller
 public class EstabelecimentosController {
 
-	private final Result result;
-	private final Validator validator;
-	private final DiretorioDeEstabelecimentos diretorio;
+	private Result result;
+	private Validator validator;
+	private DiretorioDeEstabelecimentos diretorio;
+	
+	/** @deprecated CDI eyes only*/
+	protected EstabelecimentosController() {
+	}
 
+	@Inject
 	public EstabelecimentosController(Result result, Validator validator, DiretorioDeEstabelecimentos diretorio) {
 		this.result = result;
 		this.validator = validator;
@@ -34,10 +41,8 @@ public class EstabelecimentosController {
 	@Post("/estabelecimentos")
 	public void adiciona(final Estabelecimento estabelecimento) {
 		// validando!
-		validator.checking(new Validations() {{
-			that(!Strings.isNullOrEmpty(estabelecimento.getNome()), "estabelecimento.nome","nome.nulo");
-			that(!Strings.isNullOrEmpty(estabelecimento.getEndereco()), "estabelecimento.endereco","endereco.nulo");
-		}});
+		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getNome()), new I18nMessage("estabelecimento.nome","nome.nulo"));
+		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getEndereco()), new I18nMessage("estabelecimento.endereco","endereco.nulo"));
 		validator.onErrorRedirectTo(this).lista();
 
 		diretorio.adiciona(estabelecimento);

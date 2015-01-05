@@ -2,20 +2,24 @@ package br.com.caelum.agiletickets.persistencia;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.caelum.agiletickets.domain.Agenda;
 import br.com.caelum.agiletickets.domain.Relogio;
 import br.com.caelum.agiletickets.models.Espetaculo;
 import br.com.caelum.agiletickets.models.Sessao;
-import br.com.caelum.vraptor.ioc.Component;
 
-@Component
 public class JPAEspetaculoDao implements Agenda {
 
-	private final EntityManager manager;
-	private final Relogio relogio;
+	private EntityManager manager;
+	private Relogio relogio;
+	
+	/** @deprecated CDI eyes only*/
+	protected JPAEspetaculoDao() {
+	}
 
+	@Inject
 	public JPAEspetaculoDao(EntityManager manager, Relogio relogio) {
 		this.manager = manager;
 		this.relogio = relogio;
