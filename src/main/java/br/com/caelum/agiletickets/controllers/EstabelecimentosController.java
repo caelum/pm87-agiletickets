@@ -21,13 +21,13 @@ public class EstabelecimentosController {
 	private Result result;
 	private Validator validator;
 	private DiretorioDeEstabelecimentos diretorio;
-	
-	/** @deprecated CDI eyes only*/
-	protected EstabelecimentosController() {
+
+	public EstabelecimentosController() {
 	}
 
 	@Inject
-	public EstabelecimentosController(Result result, Validator validator, DiretorioDeEstabelecimentos diretorio) {
+	public EstabelecimentosController(Result result, Validator validator,
+			DiretorioDeEstabelecimentos diretorio) {
 		this.result = result;
 		this.validator = validator;
 		this.diretorio = diretorio;
@@ -40,16 +40,14 @@ public class EstabelecimentosController {
 
 	@Post("/estabelecimentos")
 	public void adiciona(final Estabelecimento estabelecimento) {
-		// validando!
-		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getNome()), new I18nMessage("estabelecimento.nome","nome.nulo"));
-		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getEndereco()), new I18nMessage("estabelecimento.endereco","endereco.nulo"));
+		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getNome()),
+				new I18nMessage("estabelecimento.nome", "nome.nulo"));
+		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getEndereco()),
+				new I18nMessage("estabelecimento.endereco", "endereco.nulo"));
 		validator.onErrorRedirectTo(this).lista();
 
 		diretorio.adiciona(estabelecimento);
 		result.redirectTo(this).lista();
 	}
 
-	private boolean ehbranco(String a) {
-		return Strings.isNullOrEmpty(a);
-	}
 }
