@@ -65,10 +65,10 @@ public class EspetaculosController {
 		// se nao tiver nome, avisa o usuario
 		// se nao tiver descricao, avisa o usuario
 		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
-			validator.add(new SimpleMessage("", "Nome do espetáculo não pode estar em branco"));
+			validator.add(new SimpleMessage("Nome do espetáculo não pode estar em branco", ""));
 		}
 		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
-			validator.add(new SimpleMessage("", "Descrição do espetáculo não pode estar em branco"));
+			validator.add(new SimpleMessage("Descrição do espetáculo não pode estar em branco", ""));
 		}
 		validator.onErrorRedirectTo(this).lista();
 
@@ -116,11 +116,11 @@ public class EspetaculosController {
 		}
 
 		if (quantidade < 1) {
-			validator.add(new SimpleMessage("", "Você deve escolher um lugar ou mais"));
+			validator.add(new SimpleMessage("Você deve escolher um lugar ou mais", ""));
 		}
 
 		if (!sessao.podeReservar(quantidade)) {
-			validator.add(new SimpleMessage("", "Não existem ingressos disponíveis"));
+			validator.add(new SimpleMessage("Não existem ingressos disponíveis", ""));
 		}
 
 		// em caso de erro, redireciona para a lista de sessao
