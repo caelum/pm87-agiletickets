@@ -31,24 +31,20 @@ import com.google.common.base.Strings;
 @Controller
 public class EspetaculosController {
 
-	public EspetaculosController() {}
-	
-	private NumberFormat CURRENCY = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+	private NumberFormat CURRENCY = NumberFormat
+			.getCurrencyInstance(new Locale("pt", "BR"));
 	private Result result;
 	private Validator validator;
 	private Agenda agenda;
 	private DiretorioDeEstabelecimentos estabelecimentos;
-<<<<<<< HEAD
-	
-	/** @deprecated CDI eyes only*/
+
+	/** @deprecated CDI eyes only */
 	protected EspetaculosController() {
 	}
-=======
-
->>>>>>> 88d04905d51ec68ddda85d0f757344c64ce46aea
 
 	@Inject
-	public EspetaculosController(Result result, Validator validator, Agenda agenda, DiretorioDeEstabelecimentos estabelecimentos) {
+	public EspetaculosController(Result result, Validator validator,
+			Agenda agenda, DiretorioDeEstabelecimentos estabelecimentos) {
 		this.result = result;
 		this.validator = validator;
 		this.agenda = agenda;
@@ -64,19 +60,17 @@ public class EspetaculosController {
 	@Post("/espetaculos")
 	public void adiciona(Espetaculo espetaculo) {
 		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
-<<<<<<< HEAD
-			validator.add(new SimpleMessage("Nome do espetáculo não pode estar em branco", ""));
+			validator.add(new SimpleMessage(
+					"Nome do espetáculo não pode estar em branco", ""));
 		}
 		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
-			validator.add(new SimpleMessage("Descrição do espetáculo não pode estar em branco", ""));
-=======
-			validator.add(new SimpleMessage("",
-					"Nome do espetáculo não pode estar em branco"));
+			validator.add(new SimpleMessage(
+					"Descrição do espetáculo não pode estar em branco", ""));
+
 		}
 		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
 			validator.add(new SimpleMessage("",
 					"Descrição do espetáculo não pode estar em branco"));
->>>>>>> 88d04905d51ec68ddda85d0f757344c64ce46aea
 		}
 		validator.onErrorRedirectTo(this).lista();
 
@@ -92,7 +86,8 @@ public class EspetaculosController {
 	}
 
 	@Post("/espetaculo/{espetaculoId}/sessoes")
-	public void cadastraSessoes(Long espetaculoId, LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
+	public void cadastraSessoes(Long espetaculoId, LocalDate inicio,
+			LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
 		Espetaculo espetaculo = carregaEspetaculo(espetaculoId);
 
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario,
@@ -125,21 +120,18 @@ public class EspetaculosController {
 		}
 
 		if (quantidade < 1) {
-<<<<<<< HEAD
-			validator.add(new SimpleMessage("Você deve escolher um lugar ou mais", ""));
+			validator.add(new SimpleMessage(
+					"Você deve escolher um lugar ou mais", ""));
 		}
 
 		if (!sessao.podeReservar(quantidade)) {
-			validator.add(new SimpleMessage("Não existem ingressos disponíveis", ""));
-=======
-			validator.add(new SimpleMessage("",
-					"Você deve escolher um lugar ou mais"));
+			validator.add(new SimpleMessage(
+					"Não existem ingressos disponíveis", ""));
 		}
 
 		if (!sessao.podeReservar(quantidade)) {
 			validator.add(new SimpleMessage("",
 					"Não existem ingressos disponíveis"));
->>>>>>> 88d04905d51ec68ddda85d0f757344c64ce46aea
 		}
 
 		validator.onErrorRedirectTo(this).sessao(sessao.getId());

@@ -26,7 +26,8 @@ public class EstabelecimentosController {
 	}
 
 	@Inject
-	public EstabelecimentosController(Result result, Validator validator, DiretorioDeEstabelecimentos diretorio) {
+	public EstabelecimentosController(Result result, Validator validator,
+			DiretorioDeEstabelecimentos diretorio) {
 		this.result = result;
 		this.validator = validator;
 		this.diretorio = diretorio;
@@ -39,15 +40,14 @@ public class EstabelecimentosController {
 
 	@Post("/estabelecimentos")
 	public void adiciona(final Estabelecimento estabelecimento) {
-		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getNome()), new I18nMessage("estabelecimento.nome","nome.nulo"));
-		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getEndereco()), new I18nMessage("estabelecimento.endereco","endereco.nulo"));
+		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getNome()),
+				new I18nMessage("estabelecimento.nome", "nome.nulo"));
+		validator.addIf(Strings.isNullOrEmpty(estabelecimento.getEndereco()),
+				new I18nMessage("estabelecimento.endereco", "endereco.nulo"));
 		validator.onErrorRedirectTo(this).lista();
 
 		diretorio.adiciona(estabelecimento);
 		result.redirectTo(this).lista();
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> 88d04905d51ec68ddda85d0f757344c64ce46aea
 }
