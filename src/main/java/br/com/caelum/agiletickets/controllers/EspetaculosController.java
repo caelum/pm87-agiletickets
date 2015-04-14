@@ -48,7 +48,7 @@ public class EspetaculosController {
 	public EspetaculosController(Result result, Validator validator, Agenda agenda, DiretorioDeEstabelecimentos estabelecimentos) {
 		this.result = result;
 		this.validator = validator;
-		this.agenda = agenda;
+//		this.agenda = agenda;
 		this.estabelecimentos = estabelecimentos;
 	}
 
