@@ -15,10 +15,6 @@ public class JPAEspetaculoDao implements Agenda {
 	private EntityManager manager;
 	private Relogio relogio;
 	
-	/** @deprecated CDI eyes only*/
-	protected JPAEspetaculoDao() {
-	}
-
 	@Inject
 	public JPAEspetaculoDao(EntityManager manager, Relogio relogio) {
 		this.manager = manager;
