@@ -1,0 +1,1 @@
+editar o arquivo .git/config para alterar o repositorio do git ou para alterar o gerenciador (github ou bitbucket)
