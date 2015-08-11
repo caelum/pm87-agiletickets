@@ -2,8 +2,11 @@ package br.com.caelum.agiletickets.domain;
 
 import org.joda.time.DateTime;
 
-public interface Relogio {
+public class RelogioDoSistema implements Relogio {
 
-	DateTime agora();
+	@Override
+	public DateTime agora() {
+		return new DateTime();
+	}
 
 }
