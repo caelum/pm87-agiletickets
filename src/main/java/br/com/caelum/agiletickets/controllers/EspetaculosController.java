@@ -40,10 +40,10 @@ public class EspetaculosController {
 	private DiretorioDeEstabelecimentos estabelecimentos;
 	private Estabelecimento estabelecimento;
 	
-	/** @deprecated CDI eyes only*/
-	protected EspetaculosController() {
+	public EspetaculosController(){
+		
 	}
-
+	
 	@Inject
 	public EspetaculosController(Result result, Validator validator, Agenda agenda, DiretorioDeEstabelecimentos estabelecimentos) {
 		this.result = result;
@@ -61,9 +61,16 @@ public class EspetaculosController {
 
 	@Post("/espetaculos")
 	public void adiciona(Espetaculo espetaculo) {
-		// aqui eh onde fazemos as varias validacoes
-		// se nao tiver nome, avisa o usuario
-		// se nao tiver descricao, avisa o usuario
+		validaEspetaculo(espetaculo);
+
+		agenda.cadastra(espetaculo);
+		result.redirectTo(this).lista();
+	}
+
+	/** aqui eh onde fazemos as varias validacoes
+	 se nao tiver nome, avisa o usuario
+	 se nao tiver descricao, avisa o usuario */
+	private void validaEspetaculo(Espetaculo espetaculo) {
 		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
 			validator.add(new SimpleMessage("", "Nome do espetáculo não pode estar em branco"));
 		}
@@ -71,9 +78,6 @@ public class EspetaculosController {
 			validator.add(new SimpleMessage("", "Descrição do espetáculo não pode estar em branco"));
 		}
 		validator.onErrorRedirectTo(this).lista();
-
-		agenda.cadastra(espetaculo);
-		result.redirectTo(this).lista();
 	}
 	
 	@Get("/espetaculo/{espetaculoId}/sessoes")
@@ -144,9 +148,4 @@ public class EspetaculosController {
 		return espetaculo;
 	}
 
-	// metodo antigo. aqui soh por backup
-	private Estabelecimento criaEstabelecimento(Long id) {
-		return estabelecimentos.todos().get(0);
-	}
-	
 }
