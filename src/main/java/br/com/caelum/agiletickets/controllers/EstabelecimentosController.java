@@ -29,6 +29,9 @@ public class EstabelecimentosController {
 		this.diretorio = diretorio;
 	}
 
+	public EstabelecimentosController() {
+	}
+	
 	@Get("/estabelecimentos")
 	public List<Estabelecimento> lista() {
 		return diretorio.todos();

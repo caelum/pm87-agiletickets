@@ -46,6 +46,10 @@ public class EspetaculosController {
 		this.estabelecimentos = estabelecimentos;
 	}
 
+	@Deprecated
+	public EspetaculosController() {
+	}
+
 	@Get("/espetaculos")
 	public List<Espetaculo> lista() {
 		// inclui a lista de estabelecimentos
@@ -55,9 +59,20 @@ public class EspetaculosController {
 
 	@Post("/espetaculos")
 	public void adiciona(Espetaculo espetaculo) {
-		// aqui eh onde fazemos as varias validacoes
-		// se nao tiver nome, avisa o usuario
-		// se nao tiver descricao, avisa o usuario
+		validaEspetaculo(espetaculo);
+
+		agenda.cadastra(espetaculo);
+		result.redirectTo(this).lista();
+	}
+	
+	/**
+	 * aqui eh onde fazemos as varias validacoes
+	 * se nao tiver nome, avisa o usuario
+	 * se nao tiver descricao, avisa o usuario
+	 * 
+	 * @param espetaculo
+	 */
+	private void validaEspetaculo(Espetaculo espetaculo) {
 		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
 			validator.add(new SimpleMessage("", "Nome do espetáculo não pode estar em branco"));
 		}
@@ -65,9 +80,6 @@ public class EspetaculosController {
 			validator.add(new SimpleMessage("", "Descrição do espetáculo não pode estar em branco"));
 		}
 		validator.onErrorRedirectTo(this).lista();
-
-		agenda.cadastra(espetaculo);
-		result.redirectTo(this).lista();
 	}
 	
 	@Get("/espetaculo/{espetaculoId}/sessoes")
@@ -109,6 +121,18 @@ public class EspetaculosController {
 			return;
 		}
 
+		validaReserva(quantidade, sessao);
+
+		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, quantidade);
+
+		sessao.reserva(quantidade);
+
+		result.include("message", "Sessão reservada com sucesso por " + CURRENCY.format(precoTotal));
+
+		result.redirectTo(IndexController.class).index();
+	}
+
+	private void validaReserva(final Integer quantidade, Sessao sessao) {
 		if (quantidade < 1) {
 			validator.add(new SimpleMessage("", "Você deve escolher um lugar ou mais"));
 		}
@@ -119,14 +143,6 @@ public class EspetaculosController {
 
 		// em caso de erro, redireciona para a lista de sessao
 		validator.onErrorRedirectTo(this).sessao(sessao.getId());
-
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, quantidade);
-
-		sessao.reserva(quantidade);
-
-		result.include("message", "Sessão reservada com sucesso por " + CURRENCY.format(precoTotal));
-
-		result.redirectTo(IndexController.class).index();
 	}
 
 	private Espetaculo carregaEspetaculo(Long espetaculoId) {
