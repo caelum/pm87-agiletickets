@@ -6,3 +6,6 @@ https://code.google.com/p/tortoisegit/
 
 criar um metodo a partir de uma selecao
 alt + shift + m
+
+#bom exemplo de conexao banco php
+https://github.com/giorgiofellipe/simpleAngularCrudMysql/blob/master/app/data/conn.php
