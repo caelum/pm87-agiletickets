@@ -9,3 +9,6 @@ alt + shift + m
 
 #bom exemplo de conexao banco php
 https://github.com/giorgiofellipe/simpleAngularCrudMysql/blob/master/app/data/conn.php
+
+altera um nome de uma vez em tod o projeto
+alt + hift + R
