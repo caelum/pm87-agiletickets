@@ -12,3 +12,7 @@ https://github.com/giorgiofellipe/simpleAngularCrudMysql/blob/master/app/data/co
 
 altera um nome de uma vez em tod o projeto
 alt + hift + R
+
+
+cria uma variavl local
+ctl + 2 + L
