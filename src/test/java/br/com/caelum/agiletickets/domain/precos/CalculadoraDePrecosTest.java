@@ -19,7 +19,7 @@ public class CalculadoraDePrecosTest {
 			.comOPreco(10.0)
 			.build();
 		
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 9);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 9);
 		
 		assertEquals(0, BigDecimal.valueOf(90.0).compareTo(precoTotal));
 	}
@@ -34,7 +34,7 @@ public class CalculadoraDePrecosTest {
 				.comOPreco(20.0)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(22.0).compareTo(precoTotal));
 	}
@@ -49,7 +49,7 @@ public class CalculadoraDePrecosTest {
 				.comOPreco(20.0)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(20.0).compareTo(precoTotal));
 	}
@@ -64,7 +64,7 @@ public class CalculadoraDePrecosTest {
 				.comOPreco(100.0)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(110.0).compareTo(precoTotal));
 	}
@@ -79,7 +79,7 @@ public class CalculadoraDePrecosTest {
 				.comOPreco(100.0)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(100.0).compareTo(precoTotal));
 	}
@@ -95,7 +95,7 @@ public class CalculadoraDePrecosTest {
 				.comDuracaoEmMinutos(50)
 				.build();
 		
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(600.0).compareTo(precoTotal));
 	}
@@ -111,7 +111,7 @@ public class CalculadoraDePrecosTest {
 				.comDuracaoEmMinutos(50)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(500.0).compareTo(precoTotal));
 	}
@@ -127,7 +127,7 @@ public class CalculadoraDePrecosTest {
 				.comDuracaoEmMinutos(100)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(550.0).compareTo(precoTotal));
 	}
@@ -143,7 +143,7 @@ public class CalculadoraDePrecosTest {
 				.comDuracaoEmMinutos(60)
 				.build();
 		
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(1200.0).compareTo(precoTotal));
 	}
@@ -159,7 +159,7 @@ public class CalculadoraDePrecosTest {
 				.comDuracaoEmMinutos(60)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(1000.0).compareTo(precoTotal));
 	}
@@ -175,7 +175,7 @@ public class CalculadoraDePrecosTest {
 				.comDuracaoEmMinutos(120)
 				.build();
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(1300.0).compareTo(precoTotal));
 	}
@@ -188,7 +188,7 @@ public class CalculadoraDePrecosTest {
 				.comOPreco(10.0)
 				.build();
 		
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, 1);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorFinal(sessao, 1);
 		
 		assertEquals(0, BigDecimal.valueOf(10.0).compareTo(precoTotal));
 	}

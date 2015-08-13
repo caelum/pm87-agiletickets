@@ -2,8 +2,10 @@ package br.com.caelum.agiletickets.domain;
 
 import org.joda.time.DateTime;
 
-public interface Relogio {
+public class Relogio {
 
-	DateTime agora();
+	public DateTime agora() {
+		return new DateTime();
+	}
 
 }
