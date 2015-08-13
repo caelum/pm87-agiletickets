@@ -11,8 +11,7 @@ public class CalculadoraDePrecos {
 		BigDecimal preco;
 		TipoDeEspetaculo tipoDeEspetaculo = sessao.getEspetaculo().getTipo();
 
-		if (tipoDeEspetaculo.equals(TipoDeEspetaculo.CINEMA)
-				|| tipoDeEspetaculo.equals(TipoDeEspetaculo.SHOW)) {
+		if (tipoDeEspetaculo.equals(TipoDeEspetaculo.CINEMA) || tipoDeEspetaculo.equals(TipoDeEspetaculo.SHOW)) {
 
 			preco = aplicaReajuste(sessao, 0.05, 0.10);
 
@@ -38,14 +37,10 @@ public class CalculadoraDePrecos {
 		return preco.multiply(BigDecimal.valueOf(quantidade));
 	}
 
-	private static BigDecimal aplicaReajuste(Sessao sessao,
-			double percentualIngressosDisponiveis, double percentualAcrescimo) {
+	private static BigDecimal aplicaReajuste(Sessao sessao, double percentualIngressosDisponiveis, double percentualAcrescimo) {
 		BigDecimal preco;
-		if ((sessao.getTotalIngressos() - sessao.getIngressosReservados())
-				/ sessao.getTotalIngressos().doubleValue() <= percentualIngressosDisponiveis) {
-			preco = sessao.getPreco().add(
-					sessao.getPreco().multiply(
-							BigDecimal.valueOf(percentualAcrescimo)));
+		if ((sessao.getTotalIngressos() - sessao.getIngressosReservados()) / sessao.getTotalIngressos().doubleValue() <= percentualIngressosDisponiveis) {
+			preco = sessao.getPreco().add(sessao.getPreco().multiply(BigDecimal.valueOf(percentualAcrescimo)));
 		} else {
 			preco = sessao.getPreco();
 		}
