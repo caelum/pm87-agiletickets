@@ -120,5 +120,18 @@ public class Sessao {
 	public BigDecimal getPreco() {
 		return preco;
 	}
+
+	public static int quantidadeIngressosDisponiveis(Sessao sessao) {
+		return sessao.getTotalIngressos() - sessao.getIngressosReservados();
+	}
+
+	public static double calculaFatorDisponivelSobreTotal(Sessao sessao) {
+		return Sessao.quantidadeIngressosDisponiveis(sessao) / sessao.getTotalIngressos().doubleValue();
+	}
+
+	public static BigDecimal reajustarSessao(Sessao sessao,
+			double fatorReajuste) {
+		return sessao.getPreco().add(sessao.getPreco().multiply(BigDecimal.valueOf(fatorReajuste)));
+	}
 	
 }
