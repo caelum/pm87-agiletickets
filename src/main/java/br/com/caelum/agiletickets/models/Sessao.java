@@ -25,6 +25,10 @@ public class Sessao {
 
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime inicio;
+	
+	private DateTime fim;
+	
+	private Periodicidade periodicidade;
 
 	private Integer duracaoEmMinutos;
 
@@ -108,7 +112,7 @@ public class Sessao {
 
 	public boolean podeReservar(Integer numeroDeIngressos) {
 		int sobraram = getIngressosDisponiveis() - numeroDeIngressos;
-        boolean naoTemEspaco = sobraram <= 0;
+        boolean naoTemEspaco = sobraram < 0;
 
         return !naoTemEspaco;
 	}
@@ -119,6 +123,22 @@ public class Sessao {
 
 	public BigDecimal getPreco() {
 		return preco;
+	}
+
+	public DateTime getFim() {
+		return fim;
+	}
+
+	public void setFim(DateTime fim) {
+		this.fim = fim;
+	}
+
+	public Periodicidade getPeriodicidade() {
+		return periodicidade;
+	}
+
+	public void setPeriodicidade(Periodicidade periodicidade) {
+		this.periodicidade = periodicidade;
 	}
 	
 }
