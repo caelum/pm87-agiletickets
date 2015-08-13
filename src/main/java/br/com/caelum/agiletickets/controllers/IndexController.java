@@ -13,10 +13,9 @@ public class IndexController {
 	private Result result;
 	private Agenda agenda;
 	
-	/** @deprecated CDI eyes only*/
-	protected IndexController() {
+	public IndexController(){
 	}
-
+	
 	@Inject
 	public IndexController(Result result, Agenda agenda) {
 		this.result = result;
