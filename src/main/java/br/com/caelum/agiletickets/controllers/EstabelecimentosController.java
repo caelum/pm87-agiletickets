@@ -22,10 +22,6 @@ public class EstabelecimentosController {
 	private Validator validator;
 	private DiretorioDeEstabelecimentos diretorio;
 	
-	/** @deprecated CDI eyes only*/
-	protected EstabelecimentosController() {
-	}
-
 	@Inject
 	public EstabelecimentosController(Result result, Validator validator, DiretorioDeEstabelecimentos diretorio) {
 		this.result = result;
@@ -33,6 +29,9 @@ public class EstabelecimentosController {
 		this.diretorio = diretorio;
 	}
 
+	public EstabelecimentosController() {
+	}
+	
 	@Get("/estabelecimentos")
 	public List<Estabelecimento> lista() {
 		return diretorio.todos();
@@ -47,9 +46,5 @@ public class EstabelecimentosController {
 
 		diretorio.adiciona(estabelecimento);
 		result.redirectTo(this).lista();
-	}
-
-	private boolean ehbranco(String a) {
-		return Strings.isNullOrEmpty(a);
 	}
 }
