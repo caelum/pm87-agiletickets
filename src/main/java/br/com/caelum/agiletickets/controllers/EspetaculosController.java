@@ -38,7 +38,6 @@ public class EspetaculosController {
 	private Validator validator;
 	private Agenda agenda;
 	private DiretorioDeEstabelecimentos estabelecimentos;
-	private Estabelecimento estabelecimento;
 	
 	/** @deprecated CDI eyes only*/
 	protected EspetaculosController() {
@@ -61,9 +60,17 @@ public class EspetaculosController {
 
 	@Post("/espetaculos")
 	public void adiciona(Espetaculo espetaculo) {
-		// aqui eh onde fazemos as varias validacoes
-		// se nao tiver nome, avisa o usuario
-		// se nao tiver descricao, avisa o usuario
+		validaEspetaculo(espetaculo);
+
+		agenda.cadastra(espetaculo);
+		result.redirectTo(this).lista();
+	}
+
+	/** 
+	 * Método para realizar as validacoes de espetáculos.
+	 * Avisa o usuario se nao tiver nome e/ou descriçao
+	 */
+	private void validaEspetaculo(Espetaculo espetaculo) {
 		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
 			validator.add(new SimpleMessage("", "Nome do espetáculo não pode estar em branco"));
 		}
@@ -71,9 +78,6 @@ public class EspetaculosController {
 			validator.add(new SimpleMessage("", "Descrição do espetáculo não pode estar em branco"));
 		}
 		validator.onErrorRedirectTo(this).lista();
-
-		agenda.cadastra(espetaculo);
-		result.redirectTo(this).lista();
 	}
 	
 	@Get("/espetaculo/{espetaculoId}/sessoes")
@@ -87,7 +91,6 @@ public class EspetaculosController {
 	public void cadastraSessoes(Long espetaculoId, LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
 		Espetaculo espetaculo = carregaEspetaculo(espetaculoId);
 
-		// aqui faz a magica!
 		// cria sessoes baseado no periodo de inicio e fim passados pelo usuario
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, periodicidade);
 
@@ -126,7 +129,7 @@ public class EspetaculosController {
 		// em caso de erro, redireciona para a lista de sessao
 		validator.onErrorRedirectTo(this).sessao(sessao.getId());
 
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, quantidade);
+		BigDecimal precoTotal = CalculadoraDePrecos.calculaValorIngresso(sessao, quantidade);
 
 		sessao.reserva(quantidade);
 
@@ -144,9 +147,4 @@ public class EspetaculosController {
 		return espetaculo;
 	}
 
-	// metodo antigo. aqui soh por backup
-	private Estabelecimento criaEstabelecimento(Long id) {
-		return estabelecimentos.todos().get(0);
-	}
-	
 }
