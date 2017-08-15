@@ -110,17 +110,38 @@ public class EspetaculoTest {
 	
 	@Test
 	public void cria5SessosComPeridiocidadeSemanalEntre01e31(){
+		Espetaculo ivete = new Espetaculo();
+		LocalDate inicio = new LocalDate();
+		LocalDate fim = inicio.plusDays(30);
+		LocalTime horario = new LocalTime();
+		Periodicidade periodicidade = Periodicidade.SEMANAL;
+		List<Sessao> sessoes = ivete.criaSessoes(inicio, fim, horario, periodicidade);
 		
+		assertEquals(sessoes.size(),5);
 	}
 	
 	@Test
 	public void naoCriaSessosComPeridiocidadeSemanalEntre31e01(){
+		Espetaculo ivete = new Espetaculo();
+		LocalDate inicio = new LocalDate();
+		LocalDate fim = inicio.minusDays(30);		
+		LocalTime horario = new LocalTime();
+		Periodicidade periodicidade = Periodicidade.SEMANAL;
+		List<Sessao> sessoes = ivete.criaSessoes(inicio, fim, horario, periodicidade);
 		
+		assertEquals(sessoes.size(),0);
 	}
 	
 	@Test
 	public void naoCriaSessoesComPeriodicidadeDiariaEntre13e10(){
+		Espetaculo ivete = new Espetaculo();
+		LocalDate inicio = new LocalDate();
+		LocalDate fim = inicio.minusDays(2);
+		LocalTime horario = new LocalTime();
+		Periodicidade periodicidade = Periodicidade.DIARIA;
+		List<Sessao> sessoes = ivete.criaSessoes(inicio, fim, horario, periodicidade);
 		
+		assertEquals(sessoes.size(),0);
 	}
 
 	private Sessao sessaoComIngressosSobrando(int quantidade) {
