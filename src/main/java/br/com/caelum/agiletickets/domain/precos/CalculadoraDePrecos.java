@@ -11,28 +11,14 @@ public class CalculadoraDePrecos {
 		BigDecimal preco;
 		
 		if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.CINEMA) || sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.SHOW)) {
-			if(calculaPorcentagemDisponivel(sessao) <= 0.05) { 
-				preco = sessao.getPreco().add(calculaFatorReajuste(sessao, 0.10));
-			} else {
-				preco = sessao.getPreco();
-			}
+			preco = reajustaPrecoPorDisponibilidade(sessao, 0.05, 0.10);
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET)) {
-			if(calculaPorcentagemDisponivel(sessao) <= 0.50) { 
-				preco = sessao.getPreco().add(calculaFatorReajuste(sessao, 0.20));
-			} else {
-				preco = sessao.getPreco();
-			}
-			
+			preco = reajustaPrecoPorDisponibilidade(sessao, 0.50, 0.20);			
 			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = sessao.getPreco().add(calculaFatorReajuste(sessao, 0.10));
+				preco = preco.add(calculaFatorReajuste(sessao, 0.10));
 			}
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.ORQUESTRA)) {
-			if(calculaPorcentagemDisponivel(sessao) <= 0.50) { 
-				preco = sessao.getPreco().add(calculaFatorReajuste(sessao, 0.20));
-			} else {
-				preco = sessao.getPreco();
-			}
-
+			preco = reajustaPrecoPorDisponibilidade(sessao, 0.50, 0.20);
 			if(sessao.getDuracaoEmMinutos() > 60){
 				preco = preco.add(calculaFatorReajuste(sessao, 0.10));
 			}
@@ -51,6 +37,18 @@ public class CalculadoraDePrecos {
 	
 	private static BigDecimal calculaFatorReajuste (Sessao sessao, double reajuste) {
 		return sessao.getPreco().multiply(BigDecimal.valueOf(reajuste));
+	}
+	
+	private static BigDecimal reajustaPrecoPorDisponibilidade (Sessao sessao, double fatorVagas, double fatorReajuste) {
+		BigDecimal precoReajustado;
+		if(calculaPorcentagemDisponivel(sessao) <= fatorVagas) { 			
+			precoReajustado = sessao.getPreco().add(calculaFatorReajuste(sessao, fatorReajuste));
+			return precoReajustado;			
+		} else {
+			precoReajustado = sessao.getPreco();
+			return precoReajustado;			
+		}
+		
 	}
 
 }	
