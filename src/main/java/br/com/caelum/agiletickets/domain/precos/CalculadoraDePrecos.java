@@ -12,16 +12,13 @@ public class CalculadoraDePrecos {
 		
 		if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.CINEMA) || sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.SHOW)) {
 			preco = reajustaPrecoPorDisponibilidade(sessao, 0.05, 0.10);
+			
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET)) {
 			preco = reajustaPrecoPorDisponibilidade(sessao, 0.50, 0.20);			
-			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = preco.add(calculaFatorReajuste(sessao, 0.10));
-			}
+			preco = reajustaPrecoPorDuracao(sessao, preco, 60,0.10);
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.ORQUESTRA)) {
 			preco = reajustaPrecoPorDisponibilidade(sessao, 0.50, 0.20);
-			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = preco.add(calculaFatorReajuste(sessao, 0.10));
-			}
+			preco = reajustaPrecoPorDuracao(sessao, preco, 60,0.10);
 		}  else {
 			//nao aplica aumento para teatro (quem vai é pobretão)
 			preco = sessao.getPreco();
@@ -49,6 +46,14 @@ public class CalculadoraDePrecos {
 			return precoReajustado;			
 		}
 		
+	}
+	
+	private static BigDecimal reajustaPrecoPorDuracao (Sessao sessao, BigDecimal preco , int fatorDuracao, double fatorReajuste) {
+		BigDecimal precoReajustado = preco;
+		if(sessao.getDuracaoEmMinutos() > 60){
+			precoReajustado = preco.add(calculaFatorReajuste(sessao, 0.10));
+		}
+		return precoReajustado;
 	}
 
 }	
