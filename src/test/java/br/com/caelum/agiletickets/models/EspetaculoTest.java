@@ -98,7 +98,14 @@ public class EspetaculoTest {
 	
 	@Test
 	public void cria3SessoesComPeriodicidadeDiariaEntreHojeE3DiasSeguintes(){
-
+		Espetaculo ivete = new Espetaculo();
+		LocalDate inicio = new LocalDate();
+		LocalDate fim = inicio.plusDays(2);
+		LocalTime horario = new LocalTime();
+		Periodicidade periodicidade = Periodicidade.DIARIA;
+		List<Sessao> sessoes = ivete.criaSessoes(inicio, fim, horario, periodicidade);
+		
+		assertEquals(sessoes.size(),3);
 	}
 	
 	@Test
