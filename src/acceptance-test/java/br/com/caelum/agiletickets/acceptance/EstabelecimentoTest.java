@@ -17,6 +17,7 @@ public class EstabelecimentoTest {
 
 	@BeforeClass
 	public static void abreBrowser() {
+		System.setProperty("webdriver.gecko.driver", "geckodriver");
 		browser = new FirefoxDriver();
 	}
 
