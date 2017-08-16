@@ -11,32 +11,14 @@ public class CalculadoraDePrecos {
 		BigDecimal preco;
 		
 		if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.CINEMA) || sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.SHOW)) {
-			//quando estiver acabando os ingressos... 
-			if((sessao.getTotalIngressos() - sessao.getIngressosReservados()) / sessao.getTotalIngressos().doubleValue() <= 0.05) { 
-				preco = sessao.getPreco().add(sessao.getPreco().multiply(BigDecimal.valueOf(0.10)));
-			} else {
-				preco = sessao.getPreco();
-			}
-		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET)) {
-			if((sessao.getTotalIngressos() - sessao.getIngressosReservados()) / sessao.getTotalIngressos().doubleValue() <= 0.50) { 
-				preco = sessao.getPreco().add(sessao.getPreco().multiply(BigDecimal.valueOf(0.20)));
-			} else {
-				preco = sessao.getPreco();
-			}
+			preco = reajustaPrecoPorDisponibilidade(sessao, 0.05, 0.10);
 			
-			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = preco.add(sessao.getPreco().multiply(BigDecimal.valueOf(0.10)));
-			}
+		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET)) {
+			preco = reajustaPrecoPorDisponibilidade(sessao, 0.50, 0.20);			
+			preco = reajustaPrecoPorDuracao(sessao, preco, 60,0.10);
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.ORQUESTRA)) {
-			if((sessao.getTotalIngressos() - sessao.getIngressosReservados()) / sessao.getTotalIngressos().doubleValue() <= 0.50) { 
-				preco = sessao.getPreco().add(sessao.getPreco().multiply(BigDecimal.valueOf(0.20)));
-			} else {
-				preco = sessao.getPreco();
-			}
-
-			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = preco.add(sessao.getPreco().multiply(BigDecimal.valueOf(0.10)));
-			}
+			preco = reajustaPrecoPorDisponibilidade(sessao, 0.50, 0.20);
+			preco = reajustaPrecoPorDuracao(sessao, preco, 60,0.10);
 		}  else {
 			//nao aplica aumento para teatro (quem vai é pobretão)
 			preco = sessao.getPreco();
@@ -44,5 +26,34 @@ public class CalculadoraDePrecos {
 
 		return preco.multiply(BigDecimal.valueOf(quantidade));
 	}
+	
+	private static double calculaPorcentagemDisponivel (Sessao sessao) {
+		int ingressosDisponiveis = sessao.getTotalIngressos() - sessao.getIngressosReservados();
+		return ingressosDisponiveis / sessao.getTotalIngressos().doubleValue();
+	}
+	
+	private static BigDecimal calculaFatorReajuste (Sessao sessao, double reajuste) {
+		return sessao.getPreco().multiply(BigDecimal.valueOf(reajuste));
+	}
+	
+	private static BigDecimal reajustaPrecoPorDisponibilidade (Sessao sessao, double fatorVagas, double fatorReajuste) {
+		BigDecimal precoReajustado;
+		if(calculaPorcentagemDisponivel(sessao) <= fatorVagas) { 			
+			precoReajustado = sessao.getPreco().add(calculaFatorReajuste(sessao, fatorReajuste));
+			return precoReajustado;			
+		} else {
+			precoReajustado = sessao.getPreco();
+			return precoReajustado;			
+		}
+		
+	}
+	
+	private static BigDecimal reajustaPrecoPorDuracao (Sessao sessao, BigDecimal preco , int fatorDuracao, double fatorReajuste) {
+		BigDecimal precoReajustado = preco;
+		if(sessao.getDuracaoEmMinutos() > 60){
+			precoReajustado = preco.add(calculaFatorReajuste(sessao, 0.10));
+		}
+		return precoReajustado;
+	}
 
-}
+}	
